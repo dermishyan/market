@@ -1,0 +1,48 @@
+.pagination a {
+    color: black;
+
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
+.login_user{
+    position: fixed;
+    top:50px;
+    right:0;
+    width:200px;
+    z-index: 999;
+    background: #ccc;
+    padding:20px;
+    padding-top:0;
+    display: none;
+}
+
+.close_login{
+    font-size: 30px;
+    cursor: pointer;
+}
+.login_small{
+    position: absolute;
+    top:50px;
+    right:0;
+    width:80px;
+    z-index: 999;
+    background: #ccc;
+    padding:5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 25px;
+
+}
+.display_none{
+    display:none;
+}
