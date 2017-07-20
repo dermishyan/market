@@ -3,25 +3,61 @@ include "header.php";
 
 $pr_id = $_GET["pr_id"];
 $res_pr = mysqli_query($connect,"select * from products where id = $pr_id");
+$num_pr = mysqli_num_rows($res_pr);
+if($num_pr == 0){
+    header("location:index.php");
+}
 $fetch_pr = mysqli_fetch_assoc($res_pr);
 foreach($fetch_pr as $k => $v){
     $$k = $fetch_pr["$k"];
 }
-$num_pr = mysqli_num_rows($res_pr);
-if($num_pr == 0){
-    header("location:index.php");
+if(isset($_SESSION["user_id"])){
+    $user_id = $_SESSION["user_id"];
+
+}
+else{
+    $user_id = "";
 }
 
 $res_cat = mysqli_query($connect,"select * from categories where id = $category_id");
 $fetch_cat = mysqli_fetch_assoc($res_cat);
 $cat_eng_name = $fetch_cat["eng_name"];
 
+
+$res_likes = mysqli_query($connect,"select likes_count from likes where pr_id = ".$pr_id ." order by id desc limit 1");
+$num_likes = mysqli_num_rows($res_likes);
+if($num_likes == 0){
+    $number = 0;
+}
+else{
+    $fetch_likes = mysqli_fetch_assoc($res_likes);
+    $number = $fetch_likes["likes_count"];
+}
+
+$res_likes_color = mysqli_query($connect,"select * from likes where pr_id = ".$pr_id." and user_id = "."'$user_id'" );
+if(mysqli_num_rows($res_likes_color) == 0){
+    $num_for_color = 5;
+}
+else{
+    $fetch_like_color = mysqli_fetch_assoc($res_likes_color);
+    $num_for_color = $fetch_like_color["like_dislike"];
+}
+
+
+
+
 ?>
 
 
 <div class="container">
     <div class="col-xs-4 col-xs-offset-4" >
-        <div style="margin-bottom: 30px;"> <img src="uploads/<?php echo $cat_eng_name;?>/<?php echo $pr_eng_name;?>/<?php echo $pr_img;?>" width="150px" height="150px"></div>
+        <div style="margin-bottom: 10px;"> <img src="uploads/<?php echo $cat_eng_name;?>/<?php echo $pr_eng_name;?>/<?php echo $pr_img;?>" width="150px" height="150px"></div>
+        <div class="col-xs-12" style="margin-bottom: 20px;margin-left: 20px;">
+            <button class="btn btn-default like" style="background:<?php if($num_for_color == 1){echo "#34f2e6";}else{echo "#fff";};?>" data-main="like" data-userid="<?php echo $user_id ;?>" data-prid="<?php echo $id ;?>"><span class="glyphicon glyphicon-thumbs-up"></span> </button>
+            <button class="btn btn-default  dislike" style="background:<?php if($num_for_color == 0){echo "#34f2e6";}else{echo "#fff";};?>" data-main="dislike" data-userid="<?php echo $user_id ;?>" data-prid="<?php echo $id ;?>"><span class="glyphicon glyphicon-thumbs-down"></span> </button>
+            <span class="number"><?php echo $number ?></span>
+        </div>
+
         <div><span>Product Name :  </span><span><?php echo $pr_eng_name;?></span></div>
         <div><span>Quantity :      </span><span><?php echo $pr_quantity;?></span></div>
         <div><span>Price :         </span><span><?php echo $pr_price;?></span></div>

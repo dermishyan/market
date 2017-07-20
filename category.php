@@ -5,7 +5,7 @@ $cat_id= $_GET['cat_id'];
 $page = $_GET['page'];
 
 $seek = ($page - 1) * 3;
-
+$limit = 3;
 
 
 $res_cat = mysqli_query($connect,"select eng_name from categories where id = "."'$cat_id'");
@@ -15,10 +15,7 @@ $cat_name = $fetch_cat['eng_name'];
 if($num_cat == 0){
     header("location:index.php");
 }
-$limit = 3;
 
-//$seek = 0;
-//mysqli_data_seek($res_pr,$seek + 3);
 $res_pr = mysqli_query($connect,"select * from products where category_id = "."'$cat_id'"."limit $seek,$limit");
 
 ?>
